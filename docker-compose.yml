@@ -4,18 +4,32 @@ services:
     web:
         image: nginx:latest
         ports:
-            - "8080:80"
+            - "80:80"
         volumes:
-            - ./code:/code
+            - ./src:/var/www/html
             - ./site.conf:/etc/nginx/conf.d/default.conf
         networks:
             - code-network
     php:
-        image: php:fpm
+        build: .
         volumes:
-            - ./code:/code
+            - ./src:/var/www/html
         networks:
             - code-network
+#        links:    
+#            - mysql
+
+#    mysql:
+#        image: mysql:latest
+#        ports:
+#            - "3306:3306"
+#        volumes:
+#            - ./mysql:/var/lib/mysql
+#        environment:
+#            MYSQL_ROOT_PASSWORD: "root"
+#            MYSQL_DATABASE: "main"
+#        networks:
+#            - code-network
 
 networks:
     code-network:
